@@ -23,5 +23,3 @@ Stack.prototype.pop = function(){
     return temp;
   }
 };
-
-var cow = new Stack();
