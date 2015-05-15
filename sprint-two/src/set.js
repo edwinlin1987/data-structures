@@ -6,22 +6,18 @@ var Set = function(){
 
 var setPrototype = {};
 
+// Constant time O(1)
 setPrototype.add = function(item){
-  //this._storage.push(item);
   this[item] = item;
 };
 
+// Linear time O(n)
 setPrototype.contains = function(item){
-  // for (var i = 0; i < this._storage.length; i++) {
-  //   if (this._storage[i] === item) {
-  //     return true;
-  //   }
-  // }
-  // return false;
-  return !!this[item];
+  return this.hasOwnProperty(item);
 
 };
 
+// Linear time O(n)
 setPrototype.remove = function(item){
   if (this.hasOwnProperty(item)) {
     delete this[item];

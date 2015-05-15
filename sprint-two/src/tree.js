@@ -14,10 +14,12 @@ var Tree = function(value){
 
 var treeMethods = {};
 
+// Constant time O(1)
 treeMethods.addChild = function(value){
   this.children.push(Tree(value));
 };
 
+// Linear time O(n)
 treeMethods.contains = function(target){
   if(this.value === target){
     return true;

@@ -5,41 +5,41 @@ var Graph = function(){
   this.connections = {};
 };
 
+// Constant time O(1)
 Graph.prototype.addNode = function(node){
   this.storage[node] = node;
   this.connections[node] = [];
 
 };
 
+// Linear O(n)
 Graph.prototype.contains = function(node){
-  if (this.storage[node]) {
+  if (this.storage.hasOwnProperty(node)) {
     return true;
   }
   return false;
 };
 
+// Linear time O(n) ?
 Graph.prototype.removeNode = function(node){
   delete this.storage[node];
 };
 
+// Linear time O(n)
 Graph.prototype.hasEdge = function(fromNode, toNode){
-  // for (var i = 0; i < this.connections[fromNode].length; i++) {
-  //   if (this.connections[fromNode][i] === toNode) {
-  //     return true;
-  //   }
-  // }
-  // return false;
   if (_.indexOf(this.connections[fromNode],toNode) > -1) {
     return true;
   }
   return false;
 };
 
+// Constant time O(1)
 Graph.prototype.addEdge = function(fromNode, toNode){
   this.connections[fromNode].push(toNode);
   this.connections[toNode].push(fromNode);
 };
 
+// Linear time O(n)
 Graph.prototype.removeEdge = function(fromNode, toNode){
   var index = _.indexOf(this.connections[fromNode], toNode);
   this.connections[fromNode].splice(index, 1);
@@ -48,6 +48,7 @@ Graph.prototype.removeEdge = function(fromNode, toNode){
   // if i find toNode splice it out.
 };
 
+// Linear time O(n) - may depend on the callback
 Graph.prototype.forEachNode = function(cb){
   _.each(this.storage, function (item) {
     cb(item);

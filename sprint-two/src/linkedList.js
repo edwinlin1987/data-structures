@@ -3,6 +3,7 @@ var LinkedList = function(){
   list.head = null;
   list.tail = null;
 
+  // Constant time O(1)
   list.addToTail = function(value){
     if(list.head === null){
       list.head = Node(value);
@@ -14,6 +15,7 @@ var LinkedList = function(){
     }
   };
 
+  // Constant time O(1)
   list.removeHead = function(){
     if(list.head !== null){
       var temp = list.head.value;
@@ -22,6 +24,7 @@ var LinkedList = function(){
     }
   };
 
+  // Linear time - O(n)
   list.contains = function(target){
     if (list.tail === null) {
       return false;
