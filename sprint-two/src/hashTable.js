@@ -1,47 +1,99 @@
 var HashTable = function(){
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
+  this.counter = 0;
 };
 
 HashTable.prototype.insert = function(k, v){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  // if (this._storage.get(i) === undefined) {
-  //   this._storage.set(i, v);
-  // } else {
-  //   i++;
-  //   this._storage.set(i, v);
-  // }
-  if (this._storage.get(i) !== undefined ){
-    var array = [[undefined,this._storage.get(i)]];
+  if (this._storage.get(i) === undefined ){
+    var array = [];
     array.push([k,v]);
     this._storage.set(i, array);
   } else {
-    this._storage.set(i,v);
+    this._storage.get(i).push([k,v]);
   }
+
+  // counter increase
+  this.counter++;
+  // if counter >=75%
+  if (this.counter / this._limit >= 0.75) {
+    // resize limit
+    this._limit *= 2;
+    // rehash everything
+    var tempStorage = LimitedArray(this._limit);
+    this._storage.each(function (list, index, collection) {
+      if (list !== undefined) {
+        for ( var a = 0; a < list.length; a++) {
+          k = list[a][0];
+          v = list[a][1];
+          var i = getIndexBelowMaxForKey(k, this._limit);
+          if (tempStorage.get(i) === undefined ){
+            var array = [];
+            array.push([k,v]);
+            tempStorage.set(i, array);
+          } else {
+            tempStorage.get(i).push([k,v]);
+          }
+        }
+      }
+    });
+    this._storage = tempStorage;
+
+  }
+
 };
 
 HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
   var val = this._storage.get(i);
-  if (Array.isArray(val)) {
-    for (var i = 0; i < val.length; i++) {
-      if (val[i][0] === k) {
-        return val[i][1];
-      }
+
+  for (var i = 0; i < val.length; i++) {
+    if (val[i][0] === k) {
+      return val[i][1];
     }
-    return val[0][1];
   }
-  return this._storage.get(i);
 
 };
 
 HashTable.prototype.remove = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  this._storage.each(function (item, index, collection) {
+  this._storage.each(function (list, index, collection) {
     if (index === i) {
-      delete collection[index];
+      for (var j = 0; j < list.length; j++) {
+        if (k === list[j][0]) {
+          list.splice(j, 1);
+          this.counter--;
+        }
+      }
     }
   });
+
+  // if counter < 75%
+  if ((this.counter / this._limit < 0.75) && (this._limit >=8)) {
+    // resize limit
+    this._limit *= 0.5;
+    // rehash everything
+    var tempStorage = LimitedArray(this._limit);
+    console.log(this._limit);
+    this._storage.each(function (list, index, collection) {
+      if (Array.isArray(list)) {
+        for ( var a = 0; a < list.length; a++) {
+          k = list[a][0];
+          v = list[a][1];
+          var i = getIndexBelowMaxForKey(k, this._limit);
+          if (tempStorage.get(i) === undefined ){
+            var array = [];
+            array.push([k,v]);
+            tempStorage.set(i, array);
+          } else {
+            tempStorage.get(i).push([k,v]);
+          }
+        }
+      }
+    });
+    this._storage = tempStorage;
+  }
 
 };
 
