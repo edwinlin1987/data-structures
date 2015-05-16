@@ -22,7 +22,20 @@ BinarySearchTreeMethods.insert = function (value) {
   }
 };
 
-BinarySearchTreeMethods.contains = function () {
+BinarySearchTreeMethods.contains = function (value) {
+  if (this.value === value) {
+    return true;
+  } else if (this.value > value) {
+    if (this.left) {
+      return this.left.contains(value);
+    }
+  } else if (this.value < value) {
+    if (this.right) {
+      return this.right.contains(value);
+    }
+  }
+  return false;
+
 
 };
 
