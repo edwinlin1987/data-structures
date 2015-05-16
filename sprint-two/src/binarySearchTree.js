@@ -39,7 +39,29 @@ BinarySearchTreeMethods.contains = function (value) {
 
 };
 
-BinarySearchTreeMethods.depthFirstLog = function () {
+BinarySearchTreeMethods.depthFirstLog = function (callback) {
+  callback(this.value); // callback original tree.value
+  var child = []; // child array []
+  if (this.left) {// if (original.left)
+    child.push(this.left);// add left to array
+  }
+  if (this.right) {// if original.right
+    child.push(this.right);// add right to array
+  }
+  while (child.length > 0) {// while array has values
+    var grandchild = [];// create grandchild array
+    for (var i = 0; i < child.length; i++) {// for child in array
+      callback(child[i].value);// callback child
+      if (child[i].left) {// add left to grandchild array if exists
+        grandchild.push(child[i].left);
+      }
+      if (child[i].right) {// add right to grandchild array if exists
+        grandchild.push(child[i].right);
+      }
+    child = grandchild;// set array to equal grandchild array to continue moving down generations
+  }
+};
+
 
 };
 
