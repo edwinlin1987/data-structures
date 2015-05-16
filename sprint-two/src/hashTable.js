@@ -56,8 +56,8 @@ HashTable.prototype.remove = function(k){
     }
   });
 
-  // if counter < 75%
-  if (this.counter / this._limit < 0.75 && this._limit > 8)  {
+  // if counter < 25%
+  if (this.counter / this._limit < 0.25 && this._limit > 8)  {
     // resize limit
     this._limit *= 0.5;
     // rehash everything
