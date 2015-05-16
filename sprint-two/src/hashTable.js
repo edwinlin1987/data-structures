@@ -21,24 +21,9 @@ HashTable.prototype.insert = function(k, v){
     // resize limit
     this._limit *= 2;
     // rehash everything
-    var tempStorage = LimitedArray(this._limit);
-    this._storage.each(function (list, index, collection) {
-      if (list !== undefined) {
-        for ( var a = 0; a < list.length; a++) {
-          k = list[a][0];
-          v = list[a][1];
-          var i = getIndexBelowMaxForKey(k, this._limit);
-          if (tempStorage.get(i) === undefined ){
-            var array = [];
-            array.push([k,v]);
-            tempStorage.set(i, array);
-          } else {
-            tempStorage.get(i).push([k,v]);
-          }
-        }
-      }
-    });
-    this._storage = tempStorage;
+    this.resize();
+    console.log(this._limit);
+
 
   }
 
@@ -57,45 +42,69 @@ HashTable.prototype.retrieve = function(k){
 };
 
 HashTable.prototype.remove = function(k){
+  if (this.counter > 0) {
+    this.counter--;
+  }
   var i = getIndexBelowMaxForKey(k, this._limit);
   this._storage.each(function (list, index, collection) {
     if (index === i) {
       for (var j = 0; j < list.length; j++) {
         if (k === list[j][0]) {
           list.splice(j, 1);
-          this.counter--;
         }
       }
     }
   });
 
   // if counter < 75%
-  if ((this.counter / this._limit < 0.75) && (this._limit >=8)) {
+  if (this.counter / this._limit < 0.75 && this._limit > 8)  {
     // resize limit
     this._limit *= 0.5;
     // rehash everything
-    var tempStorage = LimitedArray(this._limit);
-    console.log(this._limit);
-    this._storage.each(function (list, index, collection) {
-      if (Array.isArray(list)) {
-        for ( var a = 0; a < list.length; a++) {
-          k = list[a][0];
-          v = list[a][1];
-          var i = getIndexBelowMaxForKey(k, this._limit);
-          if (tempStorage.get(i) === undefined ){
-            var array = [];
-            array.push([k,v]);
-            tempStorage.set(i, array);
-          } else {
-            tempStorage.get(i).push([k,v]);
-          }
-        }
-      }
-    });
-    this._storage = tempStorage;
+    this.resize();
   }
 
 };
+
+HashTable.prototype.resize = function () {
+  var limit = this._limit;
+  var tempStorage = LimitedArray(limit);
+  this._storage.each(function (list, index, collection) {
+    if (Array.isArray(list)) {
+      for (var a = 0; a < list.length; a++) {
+        var i = getIndexBelowMaxForKey(list[a][0], limit);
+        if (tempStorage.get(i) === undefined) {
+          var array = [];
+          array.push([list[a][0],list[a][1]]);
+          tempStorage.set(i, array);
+        } else {
+          tempStorage.get(i).push([list[a][0],list[a][1]]);
+        }
+      }
+    }
+
+  });
+  this._storage = tempStorage;
+
+  // var tempStorage = LimitedArray(this._limit);
+  // this._storage.each(function (list, index, collection) {
+  //   if (Array.isArray(list)) {
+  //     for ( var a = 0; a < list.length; a++) {
+  //       k = list[a][0];
+  //       v = list[a][1];
+  //       var i = getIndexBelowMaxForKey(k, this._limit);
+  //       if (tempStorage.get(i) === undefined ){
+  //         var array = [];
+  //         array.push([k,v]);
+  //         tempStorage.set(i, array);
+  //       } else {
+  //         tempStorage.get(i).push([k,v]);
+  //       }
+  //     }
+  //   }
+  // });
+  // this._storage = tempStorage;
+}
 
 
 
