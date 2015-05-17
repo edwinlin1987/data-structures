@@ -1,5 +1,3 @@
-
-
 var Graph = function(){
   this.storage =  {};
   this.connections = {};
@@ -9,7 +7,6 @@ var Graph = function(){
 Graph.prototype.addNode = function(node){
   this.storage[node] = node;
   this.connections[node] = [];
-
 };
 
 // Linear O(n)
@@ -27,10 +24,7 @@ Graph.prototype.removeNode = function(node){
 
 // Linear time O(n)
 Graph.prototype.hasEdge = function(fromNode, toNode){
-  if (_.indexOf(this.connections[fromNode],toNode) > -1) {
-    return true;
-  }
-  return false;
+  return _.indexOf(this.connections[fromNode],toNode) > -1
 };
 
 // Constant time O(1)
@@ -45,7 +39,6 @@ Graph.prototype.removeEdge = function(fromNode, toNode){
   this.connections[fromNode].splice(index, 1);
   index = _.indexOf(this.connections[toNode], fromNode);
   this.connections[toNode].splice(index, 1);
-  // if i find toNode splice it out.
 };
 
 // Linear time O(n) - may depend on the callback

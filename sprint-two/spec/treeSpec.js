@@ -43,7 +43,7 @@ describe('tree', function() {
   it('should execute a callback on all nodes upon calling traverse', function () {
     var sum = 0;
     var test = function (item) {
-      console.log(item.value);
+
       if (item.value !== undefined) {
         sum += item.value;
       }

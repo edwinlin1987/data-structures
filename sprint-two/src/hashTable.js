@@ -22,9 +22,6 @@ HashTable.prototype.insert = function(k, v){
     this._limit *= 2;
     // rehash everything
     this.resize();
-    console.log(this._limit);
-
-
   }
 
 };
@@ -85,25 +82,6 @@ HashTable.prototype.resize = function () {
 
   });
   this._storage = tempStorage;
-
-  // var tempStorage = LimitedArray(this._limit);
-  // this._storage.each(function (list, index, collection) {
-  //   if (Array.isArray(list)) {
-  //     for ( var a = 0; a < list.length; a++) {
-  //       k = list[a][0];
-  //       v = list[a][1];
-  //       var i = getIndexBelowMaxForKey(k, this._limit);
-  //       if (tempStorage.get(i) === undefined ){
-  //         var array = [];
-  //         array.push([k,v]);
-  //         tempStorage.set(i, array);
-  //       } else {
-  //         tempStorage.get(i).push([k,v]);
-  //       }
-  //     }
-  //   }
-  // });
-  // this._storage = tempStorage;
 }
 
 

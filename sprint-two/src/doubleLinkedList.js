@@ -9,10 +9,10 @@ var DoubleLinkedList = function(){
       list.head = Node(value);
       list.tail = list.head;
     } else{
-      var temp = Node(value);
-      list.tail.next = temp;
-      temp.previous = list.tail;
-      list.tail = temp;
+      var last = Node(value);
+      list.tail.next = last;
+      last.previous = list.tail;
+      list.tail = last;
     }
   };
 
@@ -21,28 +21,28 @@ var DoubleLinkedList = function(){
       list.head = Node(value);
       list.tail = list.head;
     } else {
-      var temp = Node(value);//create temp = new node
-      list.head.previous = temp;//make list.head.previous point at new node
-      temp.next = list.head;//temp.next will point at list.head
-      list.head = temp;//set list.head to temp
+      var first = Node(value);//create first = new node
+      list.head.previous = first;//make list.head.previous point at new node
+      first.next = list.head;//first.next will point at list.head
+      list.head = first;//set list.head to temp
     }
   };
 
   // Constant time O(1)
   list.removeHead = function(){
     if(list.head !== null){
-      var temp = list.head.value;
+      var first = list.head.value;
       list.head = list.head.next;
-      return temp;
+      return first;
     }
   };
 
   list.removeTail = function () {
     if (list.tail !== null) {
-      var temp = list.tail.value;
+      var last = list.tail.value;
       list.tail = list.tail.previous;
       list.tail.next = null;
-      return temp;
+      return last;
     }
   };
 
@@ -51,17 +51,15 @@ var DoubleLinkedList = function(){
     if (list.tail === null) {
       return false;
     }
-    //reach into head
     if (list.head.value === target) {
       return true;
     } else {
-      var temp = list.head.next;
-      while (temp !== null) {
-        if (temp.value === target) {
+      var check = list.head.next;
+      while (check !== null) {
+        if (check.value === target) {
           return true;
-        } else {
-          temp = temp.next;
         }
+        check = check.next;
       }
 
     }

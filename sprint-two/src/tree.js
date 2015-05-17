@@ -1,11 +1,12 @@
 var Tree = function(value){
   var newTree = {};
+
   newTree.value = value;
   newTree.parent = null;
+  newTree.children = [];
 
-  // your code here
-  newTree.children = [];  // fix me
   _.extend(newTree, treeMethods);
+
   return newTree;
 };
 
@@ -26,14 +27,13 @@ treeMethods.addChild = function(value){
 treeMethods.contains = function(target){
   if(this.value === target){
     return true;
-  } else {
-    for(var i = 0; i<this.children.length; i++){
-      if(this.children[i].contains(target)){
-        return true;
-      }
-
+  }
+  for (var i = 0; i<this.children.length; i++) {
+    if(this.children[i].contains(target)){
+      return true;
     }
   }
+
   return false;
 };
 

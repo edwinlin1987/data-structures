@@ -9,18 +9,18 @@ var LinkedList = function(){
       list.head = Node(value);
       list.tail = list.head;
     } else{
-      var temp = Node(value);
-      list.tail.next = temp;
-      list.tail = temp;
+      var last = Node(value);
+      list.tail.next = last;
+      list.tail = last;
     }
   };
 
   // Constant time O(1)
   list.removeHead = function(){
     if(list.head !== null){
-      var temp = list.head.value;
+      var first = list.head.value;
       list.head = list.head.next;
-      return temp;
+      return first;
     }
   };
 
@@ -29,25 +29,21 @@ var LinkedList = function(){
     if (list.tail === null) {
       return false;
     }
-    //reach into head
     if (list.head.value === target) {
       return true;
     } else {
-      var temp = list.head.next;
-      while (temp !== null) {
-        if (temp.value === target) {
+      var check = list.head.next;
+      while (check !== null) {
+        if (check.value === target) {
           return true;
         } else {
-          temp = temp.next;
+          check = check.next;
         }
       }
 
     }
 
     return false;
-      //grab head's next property
-      //return true if it finds target, otherwise continue loop
-        // if never found, return false;
   };
 
   return list;

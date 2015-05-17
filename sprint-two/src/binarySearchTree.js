@@ -40,6 +40,16 @@ BinarySearchTreeMethods.contains = function (value) {
 };
 
 BinarySearchTreeMethods.depthFirstLog = function (callback) {
+  callback(this);
+  if(this.left) {
+    this.left.depthFirstLog(callback);
+  }
+  if(this.right){
+    this.right.depthFirstLog(callback);
+  }
+};
+
+BinarySearchTreeMethods.breadthFirstLog = function (callback) {
   callback(this.value); // callback original tree.value
   var child = []; // child array []
   if (this.left) {// if (original.left)
@@ -58,12 +68,12 @@ BinarySearchTreeMethods.depthFirstLog = function (callback) {
       if (child[i].right) {// add right to grandchild array if exists
         grandchild.push(child[i].right);
       }
+    }
     child = grandchild;// set array to equal grandchild array to continue moving down generations
   }
 };
 
 
-};
 
 
 
